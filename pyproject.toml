@@ -26,6 +26,7 @@ alembic = "^1.13.1"
 sqlalchemy = "^2.0.29"
 isort = "^5.13.2"
 pytest = "^8.2.0"
+fastapi-users = {extras = ["sqlalchemy"], version = "^13.0.0"}
 
 
 [build-system]
