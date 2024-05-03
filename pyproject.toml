@@ -28,8 +28,15 @@ isort = "^5.13.2"
 pytest = "^8.2.0"
 sqlalchemy-utils = "^0.41.2"
 cryptography = "^42.0.5"
+pytest-asyncio = "^0.23.6"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = [
+    ".", "app"
+]
+asyncio_mode="auto"
