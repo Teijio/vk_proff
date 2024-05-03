@@ -1,9 +1,9 @@
 version: '3.9'
 
 services:
-  db:
+  db_vk:
     container_name: vk_postgresql
-    image: postgres:15.3-alpine3.18
+    image: postgres:16.2-alpine3.18
     restart: always
     hostname: postgresql
     env_file: ../.env
@@ -12,7 +12,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - vk_pgdata:/var/lib/postgresql/data
     ports:
       - "${DB_PORT}:5432"
     healthcheck:
@@ -23,7 +23,7 @@ services:
     networks:
       - backend
 
-  # backend:
+  # backend_vk:
   #   build: ../.
   #   container_name: vk_app
   #   restart: always
@@ -31,7 +31,7 @@ services:
   #   volumes:
   #     - logs_volume:/app/logs
   #   ports:
-  #     - "5000:7070"
+  #     - "80:80"
   #   env_file: ../.env
   #   environment:
   #     DATABASE_URL: ${DATABASE_URL}
@@ -39,7 +39,7 @@ services:
   #     - db
   #   networks:
   #     - backend
-  #   command: ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 7070"]
+  #   command: ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 80"]
 
 volumes:
   vk_pgdata:

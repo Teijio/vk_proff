@@ -1,2 +1,0 @@
-1. pip install poetry
-2. poetry new "name_project"
