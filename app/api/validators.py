@@ -9,6 +9,12 @@ from app.crud.user import user_crud
 from app.models.user import User
 
 
+async def check_unique_user_login(user_login: str, session: AsyncSession = Depends(get_async_session)) -> bool:
+    is_unique_user_login = user_crud.is_unique_user_login(user_login, session)
+    if not await is_unique_user_login:
+        raise HTTPException(status_code=422, detail="Данный login уже занят")
+
+
 async def get_user(user_id: UUID, session: AsyncSession = Depends(get_async_session)) -> Optional[User]:
     user = await user_crud.get_by_attribute("id", user_id, session)
     if user is None:

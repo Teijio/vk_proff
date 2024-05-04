@@ -23,23 +23,20 @@ services:
     networks:
       - backend
 
-  # backend_vk:
-  #   build: ../.
-  #   container_name: vk_app
-  #   restart: always
-  #   # image: ridpfrep/fb_project:latest
-  #   volumes:
-  #     - logs_volume:/app/logs
-  #   ports:
-  #     - "80:80"
-  #   env_file: ../.env
-  #   environment:
-  #     DATABASE_URL: ${DATABASE_URL}
-  #   depends_on:
-  #     - db
-  #   networks:
-  #     - backend
-  #   command: ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 80"]
+  backend_vk:
+    build: ../.
+    container_name: vk_app
+    restart: always
+    ports:
+      - "5000:7070"
+    env_file: ../.env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      - db_vk
+    networks:
+      - backend
+    command: ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 7070"]
 
 volumes:
   vk_pgdata:

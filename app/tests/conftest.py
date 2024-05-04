@@ -1,15 +1,16 @@
 import asyncio
-import pytest
-
 from typing import AsyncGenerator
+
+import pytest
 from fastapi.testclient import TestClient
+from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import declared_attr, sessionmaker
-from httpx import AsyncClient
+
 from app.core.config import settings
-from app.main import app
 from app.core.database import get_async_session
+from app.main import app
 
 
 class PreBase:
@@ -22,7 +23,7 @@ Base = declarative_base(cls=PreBase)
 engine_test = create_async_engine(
     settings.test_database_url,
 )
-AsyncSessionLocal = sessionmaker(
+async_session_local = sessionmaker(
     engine_test,
     class_=AsyncSession,
     expire_on_commit=False,
@@ -32,7 +33,7 @@ metadata.bind = engine_test
 
 
 async def override_get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    async with AsyncSessionLocal() as async_session:
+    async with async_session_local() as async_session:
         yield async_session
 
 
@@ -59,6 +60,6 @@ client = TestClient(app)
 
 
 @pytest.fixture(scope="session")
-async def ac() -> AsyncGenerator[AsyncClient, None]:
-    async with AsyncClient(app=app, base_url="http://127.0.0.1:8000") as ac:
-        yield ac
+async def async_client() -> AsyncGenerator[AsyncClient, None]:
+    async with AsyncClient(app=app, base_url="http://testim") as async_client:
+        yield async_client

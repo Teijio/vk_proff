@@ -3,7 +3,10 @@ from enum import Enum
 from typing import Optional
 from uuid import UUID
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, StringConstraints
+from typing_extensions import Annotated
+
+PASSWORD_MIN_LENGTH = 10
 
 
 class EnvTypes(str, Enum):
@@ -19,7 +22,7 @@ class DomainTypes(str, Enum):
 
 class UserBase(BaseModel):
     login: EmailStr
-    password: str
+    password: Annotated[str, StringConstraints(min_length=PASSWORD_MIN_LENGTH)]
     project_id: UUID
     env: EnvTypes
     domain: DomainTypes
